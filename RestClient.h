@@ -47,6 +47,7 @@ class RestClient {
     int del(const char*, String*);
     // DELETE path and body and response
     int del(const char*, const char*, String*);
+    void flush();
 
   private:
     WiFiClient client;

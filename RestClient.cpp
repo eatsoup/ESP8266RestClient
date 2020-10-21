@@ -1,4 +1,5 @@
 #include "RestClient.h"
+/* #define HTTP_DEBUG */
 
 #ifdef HTTP_DEBUG
 #define HTTP_DEBUG_PRINT(string) (Serial.print(string))
@@ -101,9 +102,18 @@ void RestClient::write(const char* string){
   }
 }
 
+void RestClient::flush(){
+  if(use_https) {
+    client_s.flush();
+  } else {
+    client.flush();
+  }
+}
+
 void RestClient::setHeader(const char* header){
   headers[num_headers] = header;
   num_headers++;
+  flush();
 }
 
 void RestClient::setContentType(const char* contentTypeValue){
@@ -186,7 +196,7 @@ int RestClient::request(const char* method, const char* path,
   }
 
   //make sure you write all those bytes.
-  delay(100);
+  /* delay(100); */
 
   HTTP_DEBUG_PRINT("HTTP: call readResponse\n");
   int statusCode = readResponse(response);
